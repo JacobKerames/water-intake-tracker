@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel;
 
 public class SettingsViewModel extends ViewModel {
     private SharedPreferences preferences;
-    private MutableLiveData<Integer> weightLiveData;
+    private final MutableLiveData<Integer> weightLiveData;
 
     public SettingsViewModel() {
         weightLiveData = new MutableLiveData<>();

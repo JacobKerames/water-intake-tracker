@@ -13,13 +13,9 @@ import java.util.List;
 import java.util.Locale;
 
 public class WaterIntakeDBHelper extends SQLiteOpenHelper {
-    // Database version
     private static final int DATABASE_VERSION = 1;
-    // Database name
     private static final String DATABASE_NAME = "water_intake_db";
-    // Table name
     private static final String TABLE_NAME = "water_intake";
-    // Table columns
     private static final String KEY_DATE = "date";
     private static final String KEY_OZ = "oz";
 

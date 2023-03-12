@@ -19,7 +19,6 @@ import com.example.watertracker.R;
 
 public class SettingsFragment extends Fragment {
     private EditText editTextWeight;
-    private SharedPreferences preferences;
     private TextView textViewWeight;
     private SettingsViewModel viewModel;
 
@@ -32,7 +31,7 @@ public class SettingsFragment extends Fragment {
         Button saveButton = root.findViewById(R.id.button_save);
         textViewWeight = root.findViewById(R.id.text_view_weight);
 
-        preferences = requireActivity().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        SharedPreferences preferences = requireActivity().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
 
         // Load the stored weight value from shared preferences
         int storedWeight = preferences.getInt("Weight", 0);
@@ -44,33 +43,28 @@ public class SettingsFragment extends Fragment {
         viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(requireActivity().getApplication())).get(SettingsViewModel.class);
         viewModel.setPreferences(preferences);
 
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Get the user-entered weight value from the EditText
-                String userInput = editTextWeight.getText().toString();
-                int userWeight = Integer.parseInt(userInput);
+        saveButton.setOnClickListener(v -> {
+            // Get the user-entered weight value from the EditText
+            String userInput = editTextWeight.getText().toString();
+            int userWeight = Integer.parseInt(userInput);
 
-                // Call the saveWeight method on the viewModel to save the weight value
-                viewModel.saveWeight(userWeight);
+            // Call the saveWeight method on the viewModel to save the weight value
+            viewModel.saveWeight(userWeight);
 
-                // Update the TextView to display the stored weight value
-                textViewWeight.setText("Stored weight: " + userWeight + " lbs");
+            // Update the TextView to display the stored weight value
+            textViewWeight.setText("Stored weight: " + userWeight + " lbs");
 
-                // Clear the EditText and hide the keyboard
-                editTextWeight.setText("");
-                InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(editTextWeight.getWindowToken(), 0);
-            }
+            // Clear the EditText and hide the keyboard
+            editTextWeight.setText("");
+            InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(editTextWeight.getWindowToken(), 0);
         });
-
         return root;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        // Nullify the view binding to prevent memory leaks
         editTextWeight = null;
         textViewWeight = null;
     }
