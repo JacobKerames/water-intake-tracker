@@ -17,6 +17,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.watertracker.databinding.FragmentHomeBinding;
 
+import java.util.Objects;
+
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
@@ -30,7 +32,7 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View rootView = binding.getRoot();
 
-        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        homeViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(requireActivity().getApplication())).get(HomeViewModel.class);
         homeViewModel.getRecommendedIntake(); // set recommended intake value
 
         waterIntakeTextView = binding.waterIntakeTextView;
@@ -40,7 +42,7 @@ public class HomeFragment extends Fragment {
 
         addButton.setOnClickListener(view -> {
             int ozToAdd = Integer.parseInt(ozToAddEditText.getText().toString());
-            homeViewModel.addWaterIntake(ozToAdd);
+            homeViewModel.addWaterIntake(ozToAdd, requireContext());
             int recommendedIntake = homeViewModel.getRecommendedIntake().getValue();
             int progress = Math.min(homeViewModel.getWaterIntake().getValue() * 100 / recommendedIntake, 100);
             waterIntakeTextView.setText(homeViewModel.getText().getValue());
