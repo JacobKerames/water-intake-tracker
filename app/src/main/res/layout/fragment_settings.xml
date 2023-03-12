@@ -1,22 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.settings.SettingsFragment">
+    android:orientation="vertical">
 
     <TextView
-        android:id="@+id/text_settings"
+        android:id="@+id/preferences_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Preferences"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:paddingTop="16dp"
+        android:paddingStart="20dp"
+        android:paddingBottom="10dp"
+        tools:ignore="RtlSymmetry" />
+
+    <EditText
+        android:id="@+id/edit_text_weight"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:inputType="number"
+        android:hint="Enter your weight (lbs)"
+        android:textSize="18sp"
+        android:padding="20dp"
+        android:background="@android:drawable/edit_text"/>
+
+    <Button
+        android:id="@+id/button_save"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:textSize="18sp"
+        android:layout_marginStart="20dp"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton" />
+
+    <TextView
+        android:id="@+id/text_view_weight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:paddingTop="10dp"
+        android:paddingStart="20dp"
+        tools:ignore="RtlSymmetry" />
+
+
+    <TextView
+        android:id="@+id/export_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Export Data to CSV"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:paddingStart="20dp"
+        android:paddingTop="40dp"
+        android:paddingBottom="10dp"
+        tools:ignore="RtlSymmetry" />
+
+    <Button
+        android:id="@+id/export_button"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="Export"
+        android:textSize="18sp"
+        android:layout_marginStart="20dp"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton" />
+
+</LinearLayout>

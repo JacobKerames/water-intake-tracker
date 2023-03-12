@@ -1,32 +1,66 @@
 package com.example.watertracker.ui.home;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.watertracker.R;
 import com.example.watertracker.databinding.FragmentHomeBinding;
+
+import java.util.Objects;
 
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
+    private HomeViewModel homeViewModel;
+    private TextView waterIntakeTextView;
+    private ProgressBar waterProgressBar;
+    private EditText ozToAddEditText;
+    private Button addButton;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
-
         binding = FragmentHomeBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        View rootView = binding.getRoot();
 
-        final TextView textView = binding.textHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-        return root;
+        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        homeViewModel.getRecommendedIntake(); // set recommended intake value
+
+        waterIntakeTextView = binding.waterIntakeTextView;
+        waterProgressBar = binding.waterProgressBar;
+        ozToAddEditText = binding.ozToAddEditText;
+        addButton = binding.addButton;
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int ozToAdd = Integer.parseInt(ozToAddEditText.getText().toString());
+                homeViewModel.addWaterIntake(ozToAdd);
+                int recommendedIntake = homeViewModel.getRecommendedIntake().getValue();
+                int progress = Math.min(homeViewModel.getWaterIntake().getValue() * 100 / recommendedIntake, 100);
+                waterIntakeTextView.setText(homeViewModel.getText().getValue());
+                waterProgressBar.setProgress(progress);
+
+                // Clear EditText and hide keyboard
+                ozToAddEditText.getText().clear();
+                InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+        });
+
+
+        return rootView;
     }
 
     @Override
