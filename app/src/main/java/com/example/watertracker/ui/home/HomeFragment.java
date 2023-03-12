@@ -17,8 +17,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.watertracker.databinding.FragmentHomeBinding;
 
-import java.util.Objects;
-
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
