@@ -50,7 +50,6 @@ public class HomeFragment extends Fragment {
             waterIntakeTextView.setText(homeViewModel.getText().getValue());
             int recommendedIntake = homeViewModel.getRecommendedIntake().getValue();
             int progress = Math.min(homeViewModel.getWaterIntake().getValue() * 100 / recommendedIntake, 100);
-            Log.d("HomeFragment", "Progress: " + progress + ", Water Intake: " + homeViewModel.getWaterIntake().getValue() + ", Recommended Intake: " + recommendedIntake);
             waterProgressBar.setProgress(progress);
 
             // Clear EditText and hide keyboard

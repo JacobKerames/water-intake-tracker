@@ -19,10 +19,6 @@ public class SettingsViewModel extends ViewModel {
     // Set the SharedPreferences object
     public void setPreferences(SharedPreferences preferences) {
         this.preferences = preferences;
-        // Update the LiveData values with the stored weight and recommended intake values
-        int storedWeight = preferences.getInt("Weight", 0);
-        weightLiveData.setValue(storedWeight);
-        recommendedIntakeLiveData.setValue(storedWeight / 2);
     }
 
     // Save the weight value in SharedPreferences
@@ -36,6 +32,11 @@ public class SettingsViewModel extends ViewModel {
 
     // Get the stored weight value as LiveData
     public LiveData<Integer> getStoredWeight() {
+        if (weightLiveData.getValue() == null) {
+            int storedWeight = preferences.getInt("Weight", 0);
+            weightLiveData.setValue(storedWeight);
+            recommendedIntakeLiveData.setValue(storedWeight / 2);
+        }
         return weightLiveData;
     }
 

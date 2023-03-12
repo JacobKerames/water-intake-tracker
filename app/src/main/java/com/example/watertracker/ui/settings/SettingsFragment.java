@@ -55,7 +55,6 @@ public class SettingsFragment extends Fragment {
             InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(editTextWeight.getWindowToken(), 0);
         });
-
         return root;
     }
 
