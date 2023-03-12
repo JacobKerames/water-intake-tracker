@@ -13,8 +13,11 @@ import java.util.List;
 import java.util.Locale;
 
 public class WaterIntakeDBHelper extends SQLiteOpenHelper {
+    // Database version and name
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "water_intake_db";
+
+    // Table and column names
     private static final String TABLE_NAME = "water_intake";
     private static final String KEY_DATE = "date";
     private static final String KEY_OZ = "oz";
@@ -23,7 +26,7 @@ public class WaterIntakeDBHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    // Creating Tables
+    // Creating table
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + "("
@@ -45,8 +48,12 @@ public class WaterIntakeDBHelper extends SQLiteOpenHelper {
     public void addIntakeRecord(IntakeRecord record) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()); // set the date format
-        String date = dateFormat.format(new Date()); // get the current date
+
+        // Get current date in the format of "MM/dd/yyyy"
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+        String date = dateFormat.format(new Date());
+
+        // Put values in ContentValues object
         values.put(KEY_DATE, date);
         values.put(KEY_OZ, record.getOz());
 
@@ -79,17 +86,18 @@ public class WaterIntakeDBHelper extends SQLiteOpenHelper {
             db.insert(TABLE_NAME, null, values);
         }
 
+        // Close the cursor and database
         cursor.close();
         db.close();
     }
 
     // Updating a record
-    public int updateIntakeRecord(IntakeRecord record) {
+    public void updateIntakeRecord(IntakeRecord record) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_OZ, record.getOz());
-        // updating row
-        return db.update(TABLE_NAME, values, KEY_DATE + " = ?",
+        // Updating row
+        db.update(TABLE_NAME, values, KEY_DATE + " = ?",
                 new String[]{record.getDate()});
     }
 
@@ -106,8 +114,11 @@ public class WaterIntakeDBHelper extends SQLiteOpenHelper {
                 record = new IntakeRecord(cursor.getString(dateIndex), cursor.getInt(ozIndex));
             }
         }
+
+        // Close the cursor and database
         cursor.close();
         db.close();
+
         return record;
     }
 
@@ -129,17 +140,9 @@ public class WaterIntakeDBHelper extends SQLiteOpenHelper {
         }
         // close the cursor
         cursor.close();
-        // close the database
         db.close();
-        // return the list of records
-        return intakeRecords;
-    }
 
-    // Deleting a record
-    public void deleteIntakeRecord(IntakeRecord record) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_NAME, KEY_DATE + " = ?",
-                new String[]{record.getDate()});
-        db.close();
+        // Return the list of records
+        return intakeRecords;
     }
 }

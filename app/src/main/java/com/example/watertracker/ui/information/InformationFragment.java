@@ -38,6 +38,7 @@ public class InformationFragment extends Fragment {
         return rootView;
     }
 
+    // Clean up references
     @Override
     public void onDestroyView() {
         super.onDestroyView();

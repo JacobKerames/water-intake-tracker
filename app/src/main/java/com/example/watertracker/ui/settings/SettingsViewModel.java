@@ -7,10 +7,12 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class SettingsViewModel extends ViewModel {
+    // Declare variables
     private SharedPreferences preferences;
     private final MutableLiveData<Integer> weightLiveData;
     private final MutableLiveData<Integer> recommendedIntakeLiveData;
 
+    // Initialize the LiveData objects
     public SettingsViewModel() {
         weightLiveData = new MutableLiveData<>();
         recommendedIntakeLiveData = new MutableLiveData<>();
@@ -38,10 +40,5 @@ public class SettingsViewModel extends ViewModel {
             recommendedIntakeLiveData.setValue(storedWeight / 2);
         }
         return weightLiveData;
-    }
-
-    // Get the recommended intake value as LiveData
-    public LiveData<Integer> getRecommendedIntake() {
-        return recommendedIntakeLiveData;
     }
 }

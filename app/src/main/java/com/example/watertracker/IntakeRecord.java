@@ -1,6 +1,7 @@
 package com.example.watertracker;
 
 public class IntakeRecord {
+    // Declare variables
     private String date;
     private int oz;
 
