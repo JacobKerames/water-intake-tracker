@@ -55,6 +55,17 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        // Update the UI elements with the latest values in the HomeViewModel
+        waterIntakeTextView.setText(homeViewModel.getText().getValue());
+        int recommendedIntake = homeViewModel.getRecommendedIntake().getValue();
+        int progress = Math.min(homeViewModel.getWaterIntake().getValue() * 100 / recommendedIntake, 100);
+        waterProgressBar.setProgress(progress);
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
