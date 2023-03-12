@@ -55,7 +55,7 @@
         android:textSize="24sp"
         android:textStyle="bold"
         android:paddingStart="20dp"
-        android:paddingTop="40dp"
+        android:paddingTop="100dp"
         android:paddingBottom="10dp"
         tools:ignore="RtlSymmetry" />
 
