@@ -33,15 +33,14 @@ public class SettingsFragment extends Fragment {
 
         SharedPreferences preferences = requireActivity().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
 
-        // Load the stored weight value from shared preferences
-        int storedWeight = preferences.getInt("Weight", 0);
-        if (storedWeight > 0) {
-            textViewWeight.setText("Stored weight: " + storedWeight);
-        }
-
         // Initialize the viewModel with the SharedPreferences object
         viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(requireActivity().getApplication())).get(SettingsViewModel.class);
         viewModel.setPreferences(preferences);
+
+        viewModel.getStoredWeight().observe(getViewLifecycleOwner(), storedWeight -> {
+            // Update the TextView to display the stored weight value
+            textViewWeight.setText("Stored weight: " + storedWeight + " lbs");
+        });
 
         saveButton.setOnClickListener(v -> {
             // Get the user-entered weight value from the EditText
@@ -51,14 +50,12 @@ public class SettingsFragment extends Fragment {
             // Call the saveWeight method on the viewModel to save the weight value
             viewModel.saveWeight(userWeight);
 
-            // Update the TextView to display the stored weight value
-            textViewWeight.setText("Stored weight: " + userWeight + " lbs");
-
             // Clear the EditText and hide the keyboard
             editTextWeight.setText("");
             InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(editTextWeight.getWindowToken(), 0);
         });
+
         return root;
     }
 

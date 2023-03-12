@@ -1,13 +1,13 @@
 package com.example.watertracker.ui.home;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.watertracker.IntakeRecord;
-import com.example.watertracker.R;
 import com.example.watertracker.WaterIntakeDBHelper;
 
 import java.text.SimpleDateFormat;
@@ -21,29 +21,18 @@ public class HomeViewModel extends ViewModel {
     private final MutableLiveData<Integer> mRecommendedIntake;
     private final WaterIntakeDBHelper mDbHelper;
 
-    public HomeViewModel() {
-        // Initialize default values
-        mText = new MutableLiveData<>();
-        mText.setValue("Today's Water Intake (oz): 0");
-
-        mWaterIntake = new MutableLiveData<>();
-        mWaterIntake.setValue(0);
-
-        mRecommendedIntake = new MutableLiveData<>();
-        mRecommendedIntake.setValue(2000); // set a default recommended intake value
-
-        mDbHelper = null;
-    }
-
     public HomeViewModel(Context context) {
+        super();
         mText = new MutableLiveData<>();
         mText.setValue("Today's Water Intake (oz): 0");
 
         mWaterIntake = new MutableLiveData<>();
         mWaterIntake.setValue(0);
 
+        SharedPreferences preferences = context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        int weight = preferences.getInt("Weight", 0);
         mRecommendedIntake = new MutableLiveData<>();
-        mRecommendedIntake.setValue(context.getResources().getInteger(R.integer.recommended_water_intake));
+        mRecommendedIntake.setValue(weight/2); // set the recommended intake value based on weight
 
         mDbHelper = new WaterIntakeDBHelper(context);
     }

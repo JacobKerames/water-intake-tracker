@@ -2,6 +2,7 @@ package com.example.watertracker.ui.home;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.watertracker.CustomViewModelFactory;
 import com.example.watertracker.databinding.FragmentHomeBinding;
 
 public class HomeFragment extends Fragment {
@@ -30,8 +32,12 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View rootView = binding.getRoot();
 
-        homeViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(requireActivity().getApplication())).get(HomeViewModel.class);
-        homeViewModel.getRecommendedIntake(); // set recommended intake value
+        homeViewModel = new ViewModelProvider(this, new CustomViewModelFactory(getActivity())).get(HomeViewModel.class);
+        homeViewModel.getRecommendedIntake().observe(getViewLifecycleOwner(), recommendedIntake -> {
+            // update progress bar and text view with new recommended intake value
+            int progress = Math.min(homeViewModel.getWaterIntake().getValue() * 100 / recommendedIntake, 100);
+            waterProgressBar.setProgress(progress);
+        });
 
         waterIntakeTextView = binding.waterIntakeTextView;
         waterProgressBar = binding.waterProgressBar;
@@ -40,10 +46,11 @@ public class HomeFragment extends Fragment {
 
         addButton.setOnClickListener(view -> {
             int ozToAdd = Integer.parseInt(ozToAddEditText.getText().toString());
-            homeViewModel.addWaterIntake(ozToAdd, requireContext());
+            homeViewModel.addWaterIntake(ozToAdd, getContext());
+            waterIntakeTextView.setText(homeViewModel.getText().getValue());
             int recommendedIntake = homeViewModel.getRecommendedIntake().getValue();
             int progress = Math.min(homeViewModel.getWaterIntake().getValue() * 100 / recommendedIntake, 100);
-            waterIntakeTextView.setText(homeViewModel.getText().getValue());
+            Log.d("HomeFragment", "Progress: " + progress + ", Water Intake: " + homeViewModel.getWaterIntake().getValue() + ", Recommended Intake: " + recommendedIntake);
             waterProgressBar.setProgress(progress);
 
             // Clear EditText and hide keyboard
@@ -58,11 +65,10 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        // Update the UI elements with the latest values in the HomeViewModel
-        waterIntakeTextView.setText(homeViewModel.getText().getValue());
-        int recommendedIntake = homeViewModel.getRecommendedIntake().getValue();
-        int progress = Math.min(homeViewModel.getWaterIntake().getValue() * 100 / recommendedIntake, 100);
-        waterProgressBar.setProgress(progress);
+        if (homeViewModel != null) {
+            waterIntakeTextView.setText(homeViewModel.getText().getValue());
+            waterProgressBar.setProgress(Math.min(homeViewModel.getWaterIntake().getValue() * 100 / homeViewModel.getRecommendedIntake().getValue(), 100));
+        }
     }
 
     @Override
