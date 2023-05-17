@@ -1,11 +1,13 @@
 # Water Intake Tracker
 
+<img src="https://github.com/JacobKerames/water-intake-tracker/assets/108101472/3b93cf02-b042-4d42-b42f-6cc46db014d3" width="600" height="auto">
+
 Water Intake Tracker is an Android application that assists users in monitoring their daily water consumption. The app uses the user's weight to suggest a daily recommended water intake. It's built using Java, XML, SQLite, and the Android SDK.
 
 ## Table of Contents
 
 - [Features](#features)
-- [Installation / Setup](#installation-/-setup)
+- [Installation and Setup](#installation-and-setup)
 - [Usage](#usage)
 - [Application Design and Architecture](#application-design-and-architecture)
 - [Data Management](#data-management)
@@ -21,7 +23,7 @@ Water Intake Tracker is an Android application that assists users in monitoring 
 
 - **Information Fragment:** Provides useful information about the importance and benefits of drinking water.
 
-## Installation / Setup
+## Installation and Setup
 
 Follow these steps to set up the Water Intake Tracker app on your local machine for development:
 
